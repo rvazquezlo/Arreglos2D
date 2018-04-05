@@ -38,6 +38,62 @@ public class Main {
     }
     
     /**
+     * Suma todos los elementos del un arreglo de 2D renglon por renglon
+     * @param arreglo: arreglo en 2D
+     * @param numeroRenglones: renglones llenos
+     * @param numeroColumnas: columnas llenas
+     * @return <ul>
+     * <li> null: si el arreglo es null, si tiene 0 columnas y/o 0 renglones, o 
+     * si el usuario da un numeroRenglones o numeroColumnas negativos o mas grandes
+     * que los que el arreglo tenga.</li>
+     * <li> De otra forma, regresa un numero entero </li>
+     */
+    public static int sumaPorRenglonRecursiva(int[][] arreglo, int numeroRenglones, int numeroColumnas){
+        Integer suma;
+        
+        if(arreglo != null && numeroRenglones > 0 && numeroColumnas > 0)
+            suma = sumaPorRenglonRecursiva(0, 0, arreglo, numeroRenglones, numeroColumnas);
+        else
+            suma = null;
+        return suma;
+    }
+    
+    /**
+     * Metodo auxiliar recursivo de public static int 
+     * sumaPorRenglonRecursiva(int[][] arreglo, int numeroRenglones, int 
+     * numeroColumnas)
+     * @param row: el renglon que se esta sumando, empezando en 0
+     * @param column: la columna que se esta sumando, empezando en 0
+     * @param arreglo: arreglo en 2D
+     * @param numeroRenglones: renglones llenos
+     * @param numeroColumnas: columnas llenas
+     * @return <ul>
+     * <li> null: si el usuario da un numeroRenglones o numeroColumnas negativos 
+     * o mas grandes que los que el arreglo tenga.</li>
+     * <li> De otra forma, regresa un numero entero </li>
+     */
+    private static Integer sumaPorRenglonRecursiva(int row, int column, int[][] arreglo, int numeroRenglones, int numeroColumnas){
+        try{
+            if(column == numeroColumnas - 1)
+                if(row == numeroRenglones - 1)
+                    return arreglo[row][column];
+                else
+                    return arreglo[row][column] + sumaPorRenglonRecursiva(row + 1, 0, arreglo, numeroRenglones, numeroColumnas);
+            else 
+                return arreglo[row][column] + sumaPorRenglonRecursiva(row, column + 1, arreglo, numeroRenglones, numeroColumnas);
+            
+        }catch(ArrayIndexOutOfBoundsException e){
+            return null;
+        }
+    }
+    
+    public static int sumaPorColumnaRecursiva(int[][] arreglo, int numeroRenglones, int numeroColumnas){
+        if(arreglo != null && numeroRenglones > 0 && numeroColumnas > 0)
+    }
+    
+    ///////suma pr columna, toString, suma diagonal ppl y regresa elementos de diagonal, sumaMAtrices, multiplica matriz 
+    
+    /**
      * Busca las posicion del elemento mas grande de cada renglon en la columna 
      * columnaBuscada de arreglo
      * @param arreglo: en el que se quiere buscar
@@ -166,6 +222,8 @@ public class Main {
         }
         return producto;
     }
+    
+    
 
     /**
      * @param args the command line arguments
