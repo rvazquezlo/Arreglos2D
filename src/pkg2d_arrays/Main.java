@@ -80,18 +80,127 @@ public class Main {
                 else
                     return arreglo[row][column] + sumaPorRenglonRecursiva(row + 1, 0, arreglo, numeroRenglones, numeroColumnas);
             else 
-                return arreglo[row][column] + sumaPorRenglonRecursiva(row, column + 1, arreglo, numeroRenglones, numeroColumnas);
-            
+                return arreglo[row][column] + sumaPorRenglonRecursiva(row, column + 1, arreglo, numeroRenglones, numeroColumnas); 
         }catch(ArrayIndexOutOfBoundsException e){
             return null;
         }
     }
     
     public static int sumaPorColumnaRecursiva(int[][] arreglo, int numeroRenglones, int numeroColumnas){
+        Integer suma;
+        
         if(arreglo != null && numeroRenglones > 0 && numeroColumnas > 0)
+            suma = sumaPorColumnaRecursiva(0, 0, arreglo, numeroRenglones, numeroColumnas);
+        else
+            suma = null;
+        return suma;
     }
     
-    ///////suma pr columna, toString, suma diagonal ppl y regresa elementos de diagonal, sumaMAtrices, multiplica matriz 
+    private static Integer sumaPorColumnaRecursiva(int row, int column, int[][] arreglo, int numeroRenglones, int numeroColumnas){
+        try{
+            if(row == numeroRenglones - 1)
+                if(column == numeroColumnas - 1)
+                    return arreglo[row][column];
+                else
+                    return arreglo[row][column] + sumaPorColumnaRecursiva(0, column + 1, arreglo, numeroRenglones, numeroColumnas);
+            else
+                return arreglo[row][column] + sumaPorColumnaRecursiva(row + 1, column, arreglo, numeroRenglones, numeroColumnas);
+        }catch(ArrayIndexOutOfBoundsException e){
+            return null;
+        }
+    }
+    
+    public static String toStringRecursivo(int [][] arreglo, int numeroRenglones, int numeroColumnas){
+        StringBuilder sb;
+        
+        sb = new StringBuilder();
+        if(arreglo != null && numeroRenglones > 0 && numeroColumnas > 0)
+                toStringRecursivo(0, 0, arreglo, numeroRenglones, numeroColumnas, sb); 
+        else
+            sb.append("arreglo es nulo o está vacío");
+        return sb.toString();          
+    }
+    
+    private static void toStringRecursivo(int row, int column, int[][] arreglo, int numeroRenglones, int numeroColumnas, StringBuilder sb){
+        try{
+            sb.append(arreglo[row][column]);
+            if(column < numeroColumnas - 1)
+                if(row == numeroRenglones - 1){
+                    sb.append("\n");
+                    toStringRecursivo(row + 1, 0, arreglo, numeroRenglones, numeroColumnas, sb);
+                }
+            else
+                toStringRecursivo(row, column + 1, arreglo, numeroRenglones, numeroColumnas, sb);
+        }catch(ArrayIndexOutOfBoundsException e){
+           sb.delete(0, sb.length());
+           sb.append("El numeroRenglones o numeroColumnas dadas excede al numero de renglones o columnas maximos de arreglo");
+        }
+    }
+    
+    public static String sumaYRegresaElementosDiagonalPrincipal(int[][] arreglo, int numeroRenglones, int numeroColumnas){
+        StringBuilder sb;
+        Integer suma;
+        
+        sb = new StringBuilder();
+        if(arreglo != null && numeroRenglones > 0){
+            if(numeroRenglones == numeroColumnas){
+                suma = 0;
+                suma = sumaYRegresaElementosDiagonalPrincipal(0, arreglo, numeroRenglones, sb);
+                if(suma != null)
+                    sb.append(suma);
+            }
+            else
+                sb.append("arreglo no es una matriz cuadrada");  
+        }
+        else 
+            sb.append("arreglo es nulo o está vacío");
+        return sb.toString();
+    } 
+    
+    private static Integer sumaYRegresaElementosDiagonalPrincipal(int row, int[][] arreglo, int numeroRenglones, StringBuilder sb){
+        int sumita;
+        
+        try{
+            sumita = arreglo[row][row];
+            sb.append(sumita + "     ");
+            if(row == numeroRenglones - 1)
+                return sumita;
+            else
+                return sumita + sumaYRegresaElementosDiagonalPrincipal(row + 1, arreglo, numeroRenglones, sb);
+        }catch(ArrayIndexOutOfBoundsException e){
+            sb.delete(0, sb.length());
+            sb.append("El numeroRenglones o numeroColumnas dadas excede al numero de renglones o columnas maximos de arreglo");
+            return null;
+        }
+    }
+    
+    public static int[][] sumaMatricesRecursiva(int[][] matriz1, int[][] matriz2, int numeroRenglones, int numeroColumnas){
+        int[][] suma;
+        
+        if(numeroRenglones > 0 && numeroColumnas > 0){
+            suma = new int[numeroRenglones][numeroColumnas];
+            sumaMatricesRecursiva(0, 0, suma, matriz1, matriz2, numeroRenglones, numeroColumnas);
+        }
+        else    
+            suma = null;
+        return suma;
+    }
+    
+    private static void sumaMatricesRecursiva(int row, int column, int [][] suma, int[][] matriz1, int[][] matriz2, int numeroRenglones, int numeroColumnas){
+        try{
+            suma[row][column] = matriz1[row][column] + matriz2[row][column];
+            if(column == numeroColumnas - 1)
+                if(row < numeroRenglones - 1)
+                    sumaMatricesRecursiva(row + 1, 0, suma, matriz1, matriz2, numeroRenglones, numeroColumnas);
+            else 
+                sumaMatricesRecursiva(row, column + 1, suma, matriz1, matriz2, numeroRenglones, numeroColumnas);
+        }catch(NullPointerException | ArrayIndexOutOfBoundsException e){
+            suma = null;
+        }
+    }
+    
+    
+    ///////multiplica matriz 
     
     /**
      * Busca las posicion del elemento mas grande de cada renglon en la columna 
