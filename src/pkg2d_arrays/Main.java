@@ -123,12 +123,13 @@ public class Main {
     
     private static void toStringRecursivo(int row, int column, int[][] arreglo, int numeroRenglones, int numeroColumnas, StringBuilder sb){
         try{
-            sb.append(arreglo[row][column]);
-            if(column < numeroColumnas - 1)
-                if(row == numeroRenglones - 1){
+            sb.append(arreglo[row][column] + "    ");
+            if(column == numeroColumnas - 1){
+                if(row < numeroRenglones - 1){
                     sb.append("\n");
                     toStringRecursivo(row + 1, 0, arreglo, numeroRenglones, numeroColumnas, sb);
                 }
+            }
             else
                 toStringRecursivo(row, column + 1, arreglo, numeroRenglones, numeroColumnas, sb);
         }catch(ArrayIndexOutOfBoundsException e){
@@ -147,7 +148,7 @@ public class Main {
                 suma = 0;
                 suma = sumaYRegresaElementosDiagonalPrincipal(0, arreglo, numeroRenglones, sb);
                 if(suma != null)
-                    sb.append(suma);
+                    sb.append("\n" + suma);
             }
             else
                 sb.append("arreglo no es una matriz cuadrada");  
@@ -189,9 +190,10 @@ public class Main {
     private static void sumaMatricesRecursiva(int row, int column, int [][] suma, int[][] matriz1, int[][] matriz2, int numeroRenglones, int numeroColumnas){
         try{
             suma[row][column] = matriz1[row][column] + matriz2[row][column];
-            if(column == numeroColumnas - 1)
+            if(column == numeroColumnas - 1){
                 if(row < numeroRenglones - 1)
                     sumaMatricesRecursiva(row + 1, 0, suma, matriz1, matriz2, numeroRenglones, numeroColumnas);
+            }
             else 
                 sumaMatricesRecursiva(row, column + 1, suma, matriz1, matriz2, numeroRenglones, numeroColumnas);
         }catch(NullPointerException | ArrayIndexOutOfBoundsException e){
@@ -199,8 +201,41 @@ public class Main {
         }
     }
     
+    public static int[][] multiplicaMatricesRecursiva(int numeroRenglones1, int numeroColumnas1, int[][] matriz1, int numeroRenglones2, int numeroColumnas2, int[][] matriz2){
+        int suma[][];
+        
+        if(matriz1 != null && matriz2 != null && numeroRenglones1 > 0 && numeroColumnas1 > 0 && numeroColumnas2 > 0 && numeroColumnas1 == numeroRenglones2){
+            suma = new int[numeroRenglones1][numeroColumnas2];
+            multiplicaMatricesRecursiva(0, 0, 0, numeroRenglones1, numeroColumnas2, numeroRenglones2, suma, matriz1, matriz2);
+        }
+        else
+            suma = null;
+        return suma;
+    }
     
-    ///////multiplica matriz 
+    private static void multiplicaMatricesRecursiva(int row, int column, int comun, int numeroRenglones, int numeroColumnas, int numeroComun, int[][] suma, int[][] matriz1, int[][] matriz2){
+        try{
+            if(comun == 0){
+                suma[row][column] = matriz1[row][comun] * matriz2[comun][column];
+                multiplicaMatricesRecursiva(row, column, comun + 1, numeroRenglones, numeroColumnas, numeroComun, suma, matriz1, matriz2);
+            }
+            else{
+                suma[row][column] = suma[row][column] + matriz1[row][comun] * matriz2[comun][column];
+                if(comun == numeroComun - 1){
+                    if(column == numeroColumnas - 1){
+                        if(row < numeroRenglones - 1)
+                            multiplicaMatricesRecursiva(row + 1, 0, 0, numeroRenglones, numeroColumnas, numeroComun, suma, matriz1, matriz2);
+                    }
+                    else
+                        multiplicaMatricesRecursiva(row, column + 1, 0, numeroRenglones, numeroColumnas, numeroComun, suma, matriz1, matriz2);   
+                }
+                else
+                    multiplicaMatricesRecursiva(row, column, comun + 1, numeroRenglones, numeroColumnas, numeroComun, suma, matriz1, matriz2);
+            }
+        }catch(ArrayIndexOutOfBoundsException e){//Por si el usuario da mal el numero de renglones o columnas de cualquier matriz
+            suma = null;
+        }
+    }
     
     /**
      * Busca las posicion del elemento mas grande de cada renglon en la columna 
@@ -350,12 +385,13 @@ public class Main {
             }
         
         System.out.println(" matriz\n" + imprimeMatriz(arreglo));           
-        System.out.println("Suma " + sumaRenglon(null, 3, 7));    
+        System.out.println("Suma " + sumaRenglon(arreglo, rows, columns));    
         System.out.println("Posicion max " + buscaPosionDeMaxEnColumna(arreglo, rows, 0));
         
-        arreglo2 = new int [columns][columns + 1];
+//        arreglo2 = new int [columns][columns + 1];
+        arreglo2 = new int[columns][rows];
         for(i = 0; i < columns; i++)
-            for(j = 0; j < columns + 1; j++){
+            for(j = 0; j < rows; j++){
                 arreglo2[i][j] = j + i + 2;
             } 
      
@@ -363,6 +399,28 @@ public class Main {
         System.out.println("\nSuma de matrices:\n" + imprimeMatriz(sumaMatrices(arreglo, arreglo2)));
         
         System.out.println("\nPRoducto de matrices:\n" + imprimeMatriz(multiplicaMatrices(arreglo, arreglo2)));
+     
+        System.out.println("Recursivos---------------------------------------------------------------------");
+    //sumaPorRenglón: suma por renglón todos los elementos del arreglo bidimensional,
+    System.out.println("Suma por renglon de todos elementos" + sumaPorRenglonRecursiva(arreglo, rows, columns)); 
+    //regresando la suma obtenida.
+    //2) sumaPorColumna: suma por columna todos los elementos del arreglo
+    //bidimensional, regresando la suma obtenida.
+    System.out.println("Suma por columna de todos los elementos" + sumaPorColumnaRecursiva(arreglo, rows, columns)); 
+    System.out.println(" matriz \n" + imprimeMatriz(arreglo)); 
+    //3) toString(): regresa el contenido del arreglo en forma de cadena.
+    System.out.println(" matriz Recursivamente\n" + toStringRecursivo(arreglo, rows, columns));
+    //4) sumaDiagonalPrincipal: suma y regresa los elementos de la diagonal principal.
+    System.out.println("Suma y elementos de diag ppl\n" + sumaYRegresaElementosDiagonalPrincipal(arreglo, rows, columns));
+    //5) sumaMatrices: suma dos matrices y regresa la matriz resultado.
+    System.out.println("\nSuma de matrices:\n" + imprimeMatriz(sumaMatrices(arreglo, arreglo2)));
+    System.out.println("\nSuma de matrices Recursiva:\n" + imprimeMatriz(sumaMatricesRecursiva(arreglo, arreglo2, rows, columns)));
+    System.out.println("\nSuma de matrices Recursiva Con Imprime Recursivo:\n" + toStringRecursivo(sumaMatricesRecursiva(arreglo, arreglo2, rows, columns), rows, columns));
+   //6) multiplicaMatrices: multiplica dos matrices y regresa la matriz resultado
+   System.out.println("\nPRoducto de matrices:\n" + imprimeMatriz(multiplicaMatrices(arreglo, arreglo2)));
+   System.out.println("\nPRoducto de matrices Recursiva:\n" + imprimeMatriz(multiplicaMatricesRecursiva(rows, columns, arreglo, columns, rows, arreglo2)));
+    System.out.println("\nPRoducto de matrices Recursiva con imprime recursivo:\n" + toStringRecursivo(multiplicaMatricesRecursiva(rows, columns, arreglo, columns, rows, arreglo2), rows, columns));
+    
     }
     
 }
