@@ -86,6 +86,17 @@ public class Main {
         }
     }
     
+    /**
+     * Suma todos los elementos del un arreglo de 2D columna por columna
+     * @param arreglo: arreglo en 2D
+     * @param numeroRenglones: renglones llenos
+     * @param numeroColumnas: columnas llenas
+     * @return <ul>
+     * <li> null: si el arreglo es null, si tiene 0 columnas y/o 0 renglones, o 
+     * si el usuario da un numeroRenglones o numeroColumnas negativos o mas grandes
+     * que los que el arreglo tenga.</li>
+     * <li> De otra forma, regresa un numero entero </li>
+     */
     public static int sumaPorColumnaRecursiva(int[][] arreglo, int numeroRenglones, int numeroColumnas){
         Integer suma;
         
@@ -96,6 +107,20 @@ public class Main {
         return suma;
     }
     
+     /**
+     * Metodo auxiliar recursivo de public static int 
+     * sumaPorColumnaRecursiva(int[][] arreglo, int numeroRenglones, int 
+     * numeroColumnas)
+     * @param row: el renglon que se esta sumando, empezando en 0
+     * @param column: la columna que se esta sumando, empezando en 0
+     * @param arreglo: arreglo en 2D
+     * @param numeroRenglones: renglones llenos
+     * @param numeroColumnas: columnas llenas
+     * @return <ul>
+     * <li> null: si el usuario da un numeroRenglones o numeroColumnas negativos 
+     * o mas grandes que los que el arreglo tenga.</li>
+     * <li> De otra forma, regresa un numero entero </li>
+     */
     private static Integer sumaPorColumnaRecursiva(int row, int column, int[][] arreglo, int numeroRenglones, int numeroColumnas){
         try{
             if(row == numeroRenglones - 1)
@@ -110,6 +135,13 @@ public class Main {
         }
     }
     
+    /**
+     * Metodo que pone los elementos de una matriz en una cadena
+     * @param arreglo: en 2D 
+     * @param numeroRenglones: renglones llenos
+     * @param numeroColumnas: columnas llenas
+     * @return 
+     */
     public static String toStringRecursivo(int [][] arreglo, int numeroRenglones, int numeroColumnas){
         StringBuilder sb;
         
@@ -375,7 +407,7 @@ public class Main {
     public static void main(String[] args) {
         int arreglo[][], i, rows, columns, j, arreglo2[][];
         
-        rows = 2;
+        rows = 3;
         columns = 2;
         arreglo = new int[rows][columns];
         
