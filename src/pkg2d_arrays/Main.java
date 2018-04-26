@@ -367,6 +367,40 @@ public class Main {
         return producto;
     }
     
+    /**
+     * 
+     * @param arre1
+     * @param ren1: numero total de renglones, empezando desde 1
+     * @param col1
+     * @param arre2
+     * @param ren2
+     * @param col2
+     * @return 
+     */
+    public static boolean sonIguales(int arre1[][], int ren1, int col1, int 
+            arre2[][], int ren2, int col2){
+        if(arre1 != null && arre2 != null && ren2 == ren1 && col1 == col2)
+            return sonIguales(arre1, arre2, 0, 0, ren1, col1);
+        return false;   
+    }
+    
+    private static boolean sonIguales(int arre1[][], int arre2[][], int row, int column, int rows, int columns){
+        if(arre1[row][column] == arre2[row][column]){
+            if(column == columns - 1){
+                if(row == rows - 1){
+                    return true;
+                }
+                else
+                    return sonIguales(arre1, arre2, row + 1, 0, rows, columns);
+            }
+            else{
+                return sonIguales(arre1, arre2, row, column + 1, rows, columns);
+            }   
+        }
+            else
+                return false; 
+    }
+    
     
 
     /**
@@ -416,10 +450,25 @@ public class Main {
     System.out.println("\nSuma de matrices:\n" + imprimeMatriz(sumaMatrices(arreglo, arreglo2)));
     System.out.println("\nSuma de matrices Recursiva:\n" + imprimeMatriz(sumaMatricesRecursiva(arreglo, arreglo2, rows, columns)));
     System.out.println("\nSuma de matrices Recursiva Con Imprime Recursivo:\n" + toStringRecursivo(sumaMatricesRecursiva(arreglo, arreglo2, rows, columns), rows, columns));
-   //6) multiplicaMatrices: multiplica dos matrices y regresa la matriz resultado
-   System.out.println("\nPRoducto de matrices:\n" + imprimeMatriz(multiplicaMatrices(arreglo, arreglo2)));
-   System.out.println("\nPRoducto de matrices Recursiva:\n" + imprimeMatriz(multiplicaMatricesRecursiva(rows, columns, arreglo, columns, rows, arreglo2)));
+    //6) multiplicaMatrices: multiplica dos matrices y regresa la matriz resultado
+    System.out.println("\nPRoducto de matrices:\n" + imprimeMatriz(multiplicaMatrices(arreglo, arreglo2)));
+    System.out.println("\nPRoducto de matrices Recursiva:\n" + imprimeMatriz(multiplicaMatricesRecursiva(rows, columns, arreglo, columns, rows, arreglo2)));
     System.out.println("\nPRoducto de matrices Recursiva con imprime recursivo:\n" + toStringRecursivo(multiplicaMatricesRecursiva(rows, columns, arreglo, columns, rows, arreglo2), rows, columns));
+    
+    //Prueba sonIguales
+    int arreglo3[][], arreglo4[][];
+        
+        rows = 8;
+        columns = 2;
+        arreglo3 = new int[rows][columns];
+        arreglo4 = new int[rows][columns + 4];
+        
+        for(i = 0; i < rows; i++)
+            for(j = 0; j < columns; j++){
+                arreglo3[i][j] = j + i;
+                arreglo4[i][j] = j + i;
+            }
+    System.out.println("\nSon iguales dos matrices: " + sonIguales(arreglo3, rows, columns, arreglo4, rows, columns + 4));
     
     }
     
